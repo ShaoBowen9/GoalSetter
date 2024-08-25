@@ -17,20 +17,22 @@ def regUser():
     successLabel = tk.Label(screen1, text="Registration successful :)", fg="green", font=("calibri",11)).pack()
 def register():
     global username, password, psEntry, usEntry
-    screen1.configure(bg='#4D4DFF')
+    screen1.configure(bg='#333333')
     
     username = StringVar()
     password = StringVar()
     
-    title  = tk.Label(screen1, text="Please enter details below .u.", font=("Calibri, 20"), bg="#4D4DFF").pack(pady=30)
-    usLabel = tk.Label(screen1, text = "Username * ", font=("Calibri, 15"), bg="#4D4DFF", fg="#000033").pack(pady=5)
+    title  = tk.Label(screen1, text="Please enter details below .u.", font=("Calibri, 23"), bg="#333333", fg="#FF3399").pack(pady=20)
+    usLabel = tk.Label(screen1, text = "Username * ", font=("Calibri, 15"), bg="#333333", fg="#FFFFFF").pack(pady=5)
     usEntry = tk.Entry(screen1, textvariable = username, width= 30)
     usEntry.pack()
-    psLabel = tk.Label(screen1, text = "Password * ", font=("Calibri, 15"), bg="#4D4DFF", fg="#000033").pack(pady=5)
+    psLabel = tk.Label(screen1, text = "Password * ", font=("Calibri, 15"), bg="#333333", fg="#FFFFFF").pack(pady=5)
     psEntry = tk.Entry(screen1, textvariable = password, width= 30)
     psEntry.pack()
-    regButton = tk.Button(screen1, text = "Register", width = 10, height = 1, command = regUser, font=("Calibri, 15"), bg="#4D4DFF", fg="#000033").pack(pady=20)
+    regButton = tk.Button(screen1, text = "Register", width = 10, height = 1, command = regUser, font=("Calibri, 15"), bg="#333333", fg="#FFFFFF").pack(pady=20)
+    backButton = tk.Button(screen1, text = "Back", width = 10, height = 1, command = lambda: switchScreen(screen0), font=("Calibri, 15"), bg="#333333", fg="#FFFFFF").pack()
     
+    switchScreen(screen1)
 def loginVerify():
     global correctUser
     usernameVerify = userVerify.get()
@@ -55,21 +57,21 @@ def loginSuccess():
     print(correctUser)
     appScreen = Toplevel(root)
     appScreen.title("Success")
-    appScreen.geometry("500x500")
-    successNotif = tk.Label(appScreen,text="Hi "+correctUser, fg="green").pack()
+    appScreen.geometry("100x150")
+    successNotif = tk.Label(appScreen,text="Hi "+correctUser+"! Welcome", fg="green").pack()
     Button(appScreen, text = "Hi", command = appScreen.destroy).pack()
 
 def passwordWrong():
     passWrong = Toplevel(root)
     passWrong.title("Password Incorrect")
-    passWrong.geometry("500x500")
-    successNotif = tk.Label(passWrong,text="YOU WERE WRONG XDDDDD POINT AND LAUGH HAHHAHAHAHAHAHAHAHA", fg="red").pack()
+    passWrong.geometry("100x150")
+    successNotif = tk.Label(passWrong,text="Password Incorrect", fg="red").pack()
     Button(passWrong, text = ":(", command = passWrong.destroy).pack()
 def userNotFound():
     userWrong = Toplevel(root)
     userWrong.title("Username Not Found")
-    userWrong.geometry("500x500")
-    successNotif = tk.Label(userWrong,text="I searched everywhere and couldn't find the username").pack()
+    userWrong.geometry("100x150")
+    successNotif = tk.Label(userWrong,text="Username Not Found").pack()
     Button(userWrong, text = "huh", command = userWrong.destroy).pack()
     
 def login():
@@ -79,7 +81,7 @@ def login():
     userVerify = StringVar()
     passVerify = StringVar()
     
-    enterDetailsLabel = tk.Label(screen2, text="Please enter login details", font=("Calibri, 20"), bg="#333333", fg="#FF3399").pack(pady=30)
+    enterDetailsLabel = tk.Label(screen2, text="Please enter login details", font=("Calibri, 23"), bg="#333333", fg="#FF3399").pack(pady=20)
     usLabel = tk.Label(screen2, text="Username * ", font=("Calibri, 15"), bg="#333333", fg="#FFFFFF").pack()
     userEntryLog = tk.Entry(screen2, textvariable = userVerify)
     userEntryLog.pack()
@@ -87,38 +89,35 @@ def login():
     passEntryLog = tk.Entry(screen2, textvariable = passVerify, show="*")
     passEntryLog.pack()
     loginButton = tk.Button(screen2, text="Login", width=10, height=1, command=loginVerify, font=("Calibri, 15"), bg="#3B3B3B", fg="#FFFFFF").pack(pady=20)
+    backButton = tk.Button(screen2, text = "Back", width = 10, height = 1, command = lambda: switchScreen(screen0), font=("Calibri, 15"), bg="#333333", fg="#FFFFFF").pack()
     
-def switchScreen(frame, name):
+    switchScreen(screen2)
+def switchScreen(frame):
+    frame.grid(row=0, column=0, sticky ="nsew")
     frame.tkraise()
-    frame.grid(row=0, column=0)
-    
-    if(name == "login"):
-        login()
-    elif(name == "reg"):
-        register()
     
 def mainStart():
-    global root, screen2, screen1, screen0
+    global root, screen2, screen1, screen0, parentFrame
     root = tk.Tk()
     root.geometry("500x500")
     root.title("Login")
     root.configure(bg='#333333')
     root.resizable(False, False)
     
-    parentFrame = tk.Frame(root, bg='#333333', highlightbackground="blue", highlightthickness=2)
+    parentFrame = tk.Frame(root, bg='#333333', width=400,height=400)
     parentFrame.pack()
     
-    
-    screen0 = tk.Frame(parentFrame)
+    screen0 = tk.Frame(parentFrame, bg='#333333') #<- it was this guy that was making it ugly
     screen1 = tk.Frame(parentFrame)
     screen2 = tk.Frame(parentFrame)
     
-    title = tk.Label(screen0, text = "Goal Setter",bg ="#333333", fg="#FF3399", font=("Calibri, 23")).pack(pady=20)
-    loginButton = tk.Button(screen0, text="Login", height="2", width="30",command=lambda:switchScreen(screen2, "login"), bg ="#3B3B3B", fg="#FFFFFF", font=("Calibri, 13")).pack()
-    regButton = tk.Button(screen0, text="Register", height="2", width="30",command=lambda:switchScreen(screen1, "reg"), bg ="#3B3B3B", fg="#FFFFFF", font=("Calibri, 13")).pack()
-    screen0.tkraise()
-    screen0.grid(row=0, column=0)
+    login()
+    register()
     
+    title = tk.Label(screen0, text = "Goal Setter",bg ="#333333", fg="#FF3399", font=("Calibri, 23")).pack(pady=20)
+    loginButton = tk.Button(screen0, text="Login", height="2", width="30",command= lambda: switchScreen(screen2), bg ="#3B3B3B", fg="#FFFFFF", font=("Calibri, 13")).pack()
+    regButton = tk.Button(screen0, text="Register", height="2", width="30",command= lambda: switchScreen(screen1), bg ="#3B3B3B", fg="#FFFFFF", font=("Calibri, 13")).pack()
+    switchScreen(screen0)
     
     root.mainloop()
 
