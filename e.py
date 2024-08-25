@@ -16,10 +16,7 @@ def regUser():
     
     successLabel = tk.Label(screen1, text="Registration successful :)", fg="green", font=("calibri",11)).pack()
 def register():
-    global username, password, psEntry, usEntry, screen1
-    screen1 =  Toplevel(root)
-    screen1.title("register")
-    screen1.geometry("500x500")
+    global username, password, psEntry, usEntry
     screen1.configure(bg='#4D4DFF')
     
     username = StringVar()
@@ -76,10 +73,7 @@ def userNotFound():
     Button(userWrong, text = "huh", command = userWrong.destroy).pack()
     
 def login():
-    global screen2, userVerify, passVerify, userEntryLog, passEntryLog
-    screen2 = Toplevel(root)
-    screen2.title("Login")
-    screen2.geometry("500x500")
+    global userVerify, passVerify, userEntryLog, passEntryLog
     screen2.configure(bg="#333333")
     
     userVerify = StringVar()
@@ -94,16 +88,37 @@ def login():
     passEntryLog.pack()
     loginButton = tk.Button(screen2, text="Login", width=10, height=1, command=loginVerify, font=("Calibri, 15"), bg="#3B3B3B", fg="#FFFFFF").pack(pady=20)
     
+def switchScreen(frame, name):
+    frame.tkraise()
+    frame.grid(row=0, column=0)
+    
+    if(name == "login"):
+        login()
+    elif(name == "reg"):
+        register()
+    
 def mainStart():
-    global root
+    global root, screen2, screen1, screen0
     root = tk.Tk()
     root.geometry("500x500")
     root.title("Login")
     root.configure(bg='#333333')
+    root.resizable(False, False)
     
-    title = tk.Label(root, text = "Goal Setter",bg ="#333333", fg="#FF3399", font=("Calibri, 23")).pack(pady=20)
-    loginButton = tk.Button(root, text="Login", height="2", width="30", command = login, bg ="#3B3B3B", fg="#FFFFFF", font=("Calibri, 13")).pack()
-    regButton = tk.Button(root, text="Register", height="2", width="30", command = register, bg ="#3B3B3B", fg="#FFFFFF", font=("Calibri, 13")).pack()
+    parentFrame = tk.Frame(root, bg='#333333', highlightbackground="blue", highlightthickness=2)
+    parentFrame.pack()
+    
+    
+    screen0 = tk.Frame(parentFrame)
+    screen1 = tk.Frame(parentFrame)
+    screen2 = tk.Frame(parentFrame)
+    
+    title = tk.Label(screen0, text = "Goal Setter",bg ="#333333", fg="#FF3399", font=("Calibri, 23")).pack(pady=20)
+    loginButton = tk.Button(screen0, text="Login", height="2", width="30",command=lambda:switchScreen(screen2, "login"), bg ="#3B3B3B", fg="#FFFFFF", font=("Calibri, 13")).pack()
+    regButton = tk.Button(screen0, text="Register", height="2", width="30",command=lambda:switchScreen(screen1, "reg"), bg ="#3B3B3B", fg="#FFFFFF", font=("Calibri, 13")).pack()
+    screen0.tkraise()
+    screen0.grid(row=0, column=0)
+    
     
     root.mainloop()
 
